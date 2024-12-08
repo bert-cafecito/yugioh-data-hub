@@ -1,11 +1,25 @@
 import csv
 import json
 import os
+import sqlite3
 
 def yugiohdb_cards():
     # Load JSON data
     with open('data/raw/yugiohdb/cards.json') as f:
         data = json.load(f)
+
+    # Connect to SQLite database
+    conn = sqlite3.connect("data/processed/yugiohdb.db")
+    c = conn.cursor()
+
+    # Create card_sets table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            age INTEGER
+        )
+    ''')
 
     # Create processed data directory
     if not os.path.exists('data/processed/yugiohdb'):
